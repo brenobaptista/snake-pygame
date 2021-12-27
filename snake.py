@@ -83,8 +83,8 @@ def generate_apple_position():
     return (random.randint(0, RESOLUTION[0]//SQUARE_SIDE - 1) * SQUARE_SIDE, random.randint(0, RESOLUTION[1]//SQUARE_SIDE - 1) * SQUARE_SIDE)
 
 
-def detect_bite(snake_head, apple_position):
-    return (snake_head[0] == apple_position[0]) and (snake_head[1] == apple_position[1])
+def detect_bite(snake_head_position, apple_position):
+    return (snake_head_position[0] == apple_position[0]) and (snake_head_position[1] == apple_position[1])
 
 
 def render(screen, snake, apple_position):
