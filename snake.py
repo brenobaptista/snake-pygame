@@ -32,7 +32,7 @@ class Gameplay():
         self.screen = pg.display.set_mode(RESOLUTION)
         self.clock = pg.time.Clock()
 
-    def setup(self, snake, apple):
+    def run(self, snake, apple):
         pg.init()
         pg.display.set_caption(TITLE)
 
@@ -173,7 +173,7 @@ def main():
     snake = Snake()
     apple = Apple()
 
-    gameplay.setup(snake, apple)
+    gameplay.run(snake, apple)
 
 
 if __name__ == "__main__":
