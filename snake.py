@@ -52,6 +52,16 @@ class Snake():
 
         return start_position
 
+    def change_direction(self, event_key):
+        if event_key == K_UP and self.direction != DOWN:
+            self.direction = UP
+        elif event_key == K_RIGHT and self.direction != LEFT:
+            self.direction = RIGHT
+        elif event_key == K_DOWN and self.direction != UP:
+            self.direction = DOWN
+        elif event_key == K_LEFT and self.direction != RIGHT:
+            self.direction = LEFT
+
     def move_body_except_head(self):
         for i in range(len(self.position) - 1, 0, -1):
             self.position[i] = (self.position[i-1][0],
@@ -129,14 +139,7 @@ def main():
                 pg.quit()
 
             if event.type == KEYDOWN:
-                if event.key == K_UP and snake.direction != DOWN:
-                    snake.direction = UP
-                elif event.key == K_RIGHT and snake.direction != LEFT:
-                    snake.direction = RIGHT
-                elif event.key == K_DOWN and snake.direction != UP:
-                    snake.direction = DOWN
-                elif event.key == K_LEFT and snake.direction != RIGHT:
-                    snake.direction = LEFT
+                snake.change_direction(event.key)
 
         if detect_bite(snake.position[0], apple.position):
             apple.spawn_new_apple()
