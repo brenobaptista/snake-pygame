@@ -79,15 +79,24 @@ class Snake():
         self.position.append((0, 0))
 
 
-def generate_apple_position():
-    return (random.randint(0, RESOLUTION[0]//SQUARE_SIDE - 1) * SQUARE_SIDE, random.randint(0, RESOLUTION[1]//SQUARE_SIDE - 1) * SQUARE_SIDE)
+class Apple():
+    def __init__(self):
+        self.peel = pg.Surface((SQUARE_SIDE, SQUARE_SIDE))
+        self.peel.fill(APPLE_COLOR)
+        self.position = self.generate_random_position()
+
+    def generate_random_position(self):
+        return (random.randint(0, RESOLUTION[0]//SQUARE_SIDE - 1) * SQUARE_SIDE, random.randint(0, RESOLUTION[1]//SQUARE_SIDE - 1) * SQUARE_SIDE)
+
+    def create_new_apple(self):
+        self.position = self.generate_random_position()
 
 
 def detect_bite(snake_head_position, apple_position):
     return (snake_head_position[0] == apple_position[0]) and (snake_head_position[1] == apple_position[1])
 
 
-def render(screen, snake, apple_position):
+def render(screen, snake, apple):
     screen.fill(BACKGROUND_COLOR)
     for x in range(0, RESOLUTION[0], SQUARE_SIDE):
         pg.draw.line(screen, LINE_COLOR, (x, 0), (x, RESOLUTION[0]))
@@ -97,9 +106,7 @@ def render(screen, snake, apple_position):
     for position in snake.position:
         screen.blit(snake.skin, position)
 
-    apple_peel = pg.Surface((SQUARE_SIDE, SQUARE_SIDE))
-    apple_peel.fill(APPLE_COLOR)
-    screen.blit(apple_peel, apple_position)
+    screen.blit(apple.peel, apple.position)
 
     pg.display.update()
 
@@ -112,7 +119,7 @@ def main():
     clock = pg.time.Clock()
 
     snake = Snake()
-    apple_position = generate_apple_position()
+    apple = Apple()
 
     while True:
         clock.tick(FRAMES_PER_SECOND)
@@ -131,13 +138,13 @@ def main():
                 elif event.key == K_LEFT and snake.direction != RIGHT:
                     snake.direction = LEFT
 
-        if detect_bite(snake.position[0], apple_position):
-            apple_position = generate_apple_position()
+        if detect_bite(snake.position[0], apple.position):
+            apple.create_new_apple()
             snake.increase_length()
 
         snake.move()
 
-        render(screen, snake, apple_position)
+        render(screen, snake, apple)
 
 
 if __name__ == "__main__":
