@@ -23,27 +23,60 @@ if START_SNAKE_HEAD_POSITION[0] % SQUARE_SIDE != 0 or START_SNAKE_HEAD_POSITION[
     raise Exception("Snake position should be a multiple of the square side")
 
 
-def generate_start_snake_position():
-    start_snake_position = [(0, 0)] * START_SNAKE_LENGTH
+class Snake():
+    def __init__(self):
+        self.skin = pg.Surface((SQUARE_SIDE, SQUARE_SIDE))
+        self.skin.fill(SNAKE_COLOR)
+        self.direction = START_SNAKE_DIRECTION
+        self.position = self.generate_start_position()
 
-    if START_SNAKE_DIRECTION == UP:
-        for i in range(0, START_SNAKE_LENGTH - 1, 1):
-            start_snake_position[i] = (START_SNAKE_HEAD_POSITION[0],
-                                       START_SNAKE_HEAD_POSITION[1] + SQUARE_SIDE * i)
-    elif START_SNAKE_DIRECTION == RIGHT:
-        for i in range(0, START_SNAKE_LENGTH - 1, 1):
-            start_snake_position[i] = (START_SNAKE_HEAD_POSITION[0] - SQUARE_SIDE * i,
-                                       START_SNAKE_HEAD_POSITION[1])
-    elif START_SNAKE_DIRECTION == DOWN:
-        for i in range(0, START_SNAKE_LENGTH - 1, 1):
-            start_snake_position[i] = (START_SNAKE_HEAD_POSITION[0],
-                                       START_SNAKE_HEAD_POSITION[1] - SQUARE_SIDE * i)
-    elif START_SNAKE_DIRECTION == LEFT:
-        for i in range(0, START_SNAKE_LENGTH - 1, 1):
-            start_snake_position[i] = (START_SNAKE_HEAD_POSITION[0] + SQUARE_SIDE * i,
-                                       START_SNAKE_HEAD_POSITION[1])
+    def generate_start_position(self):
+        start_position = [(0, 0)] * START_SNAKE_LENGTH
 
-    return start_snake_position
+        if START_SNAKE_DIRECTION == UP:
+            for i in range(0, START_SNAKE_LENGTH - 1, 1):
+                start_position[i] = (START_SNAKE_HEAD_POSITION[0],
+                                     START_SNAKE_HEAD_POSITION[1] + SQUARE_SIDE * i)
+        elif START_SNAKE_DIRECTION == RIGHT:
+            for i in range(0, START_SNAKE_LENGTH - 1, 1):
+                start_position[i] = (START_SNAKE_HEAD_POSITION[0] - SQUARE_SIDE * i,
+                                     START_SNAKE_HEAD_POSITION[1])
+        elif START_SNAKE_DIRECTION == DOWN:
+            for i in range(0, START_SNAKE_LENGTH - 1, 1):
+                start_position[i] = (START_SNAKE_HEAD_POSITION[0],
+                                     START_SNAKE_HEAD_POSITION[1] - SQUARE_SIDE * i)
+        elif START_SNAKE_DIRECTION == LEFT:
+            for i in range(0, START_SNAKE_LENGTH - 1, 1):
+                start_position[i] = (START_SNAKE_HEAD_POSITION[0] + SQUARE_SIDE * i,
+                                     START_SNAKE_HEAD_POSITION[1])
+
+        return start_position
+
+    def move_body_except_head(self):
+        for i in range(len(self.position) - 1, 0, -1):
+            self.position[i] = (self.position[i-1][0],
+                                self.position[i-1][1])
+
+    def move_head(self):
+        if self.direction == UP:
+            self.position[0] = (self.position[0][0],
+                                self.position[0][1] - SQUARE_SIDE)
+        elif self.direction == RIGHT:
+            self.position[0] = (self.position[0][0] +
+                                SQUARE_SIDE, self.position[0][1])
+        elif self.direction == DOWN:
+            self.position[0] = (self.position[0][0],
+                                self.position[0][1] + SQUARE_SIDE)
+        elif self.direction == LEFT:
+            self.position[0] = (self.position[0][0] -
+                                SQUARE_SIDE, self.position[0][1])
+
+    def move(self):
+        self.move_body_except_head()
+        self.move_head()
+
+    def increase_length(self):
+        self.position.append((0, 0))
 
 
 def generate_apple_position():
@@ -54,42 +87,15 @@ def detect_bite(snake_head, apple_position):
     return (snake_head[0] == apple_position[0]) and (snake_head[1] == apple_position[1])
 
 
-def increase_snake_length(snake_position):
-    snake_position.append((0, 0))
-
-
-def move_snake_body_except_head(snake_position):
-    for i in range(len(snake_position) - 1, 0, -1):
-        snake_position[i] = (snake_position[i-1][0],
-                             snake_position[i-1][1])
-
-
-def move_snake_head(snake_position, snake_direction):
-    if snake_direction == UP:
-        snake_position[0] = (snake_position[0][0],
-                             snake_position[0][1] - SQUARE_SIDE)
-    elif snake_direction == RIGHT:
-        snake_position[0] = (snake_position[0][0] +
-                             SQUARE_SIDE, snake_position[0][1])
-    elif snake_direction == DOWN:
-        snake_position[0] = (snake_position[0][0],
-                             snake_position[0][1] + SQUARE_SIDE)
-    elif snake_direction == LEFT:
-        snake_position[0] = (snake_position[0][0] -
-                             SQUARE_SIDE, snake_position[0][1])
-
-
-def render(screen, snake_position, apple_position):
+def render(screen, snake, apple_position):
     screen.fill(BACKGROUND_COLOR)
     for x in range(0, RESOLUTION[0], SQUARE_SIDE):
         pg.draw.line(screen, LINE_COLOR, (x, 0), (x, RESOLUTION[0]))
     for y in range(0, RESOLUTION[1], SQUARE_SIDE):
         pg.draw.line(screen, LINE_COLOR, (0, y), (RESOLUTION[1], y))
 
-    snake_skin = pg.Surface((SQUARE_SIDE, SQUARE_SIDE))
-    snake_skin.fill(SNAKE_COLOR)
-    for position in snake_position:
-        screen.blit(snake_skin, position)
+    for position in snake.position:
+        screen.blit(snake.skin, position)
 
     apple_peel = pg.Surface((SQUARE_SIDE, SQUARE_SIDE))
     apple_peel.fill(APPLE_COLOR)
@@ -105,8 +111,7 @@ def main():
 
     clock = pg.time.Clock()
 
-    snake_position = generate_start_snake_position()
-    snake_direction = START_SNAKE_DIRECTION
+    snake = Snake()
     apple_position = generate_apple_position()
 
     while True:
@@ -117,24 +122,22 @@ def main():
                 pg.quit()
 
             if event.type == KEYDOWN:
-                if event.key == K_UP and snake_direction != DOWN:
-                    snake_direction = UP
-                elif event.key == K_RIGHT and snake_direction != LEFT:
-                    snake_direction = RIGHT
-                elif event.key == K_DOWN and snake_direction != UP:
-                    snake_direction = DOWN
-                elif event.key == K_LEFT and snake_direction != RIGHT:
-                    snake_direction = LEFT
+                if event.key == K_UP and snake.direction != DOWN:
+                    snake.direction = UP
+                elif event.key == K_RIGHT and snake.direction != LEFT:
+                    snake.direction = RIGHT
+                elif event.key == K_DOWN and snake.direction != UP:
+                    snake.direction = DOWN
+                elif event.key == K_LEFT and snake.direction != RIGHT:
+                    snake.direction = LEFT
 
-        if detect_bite(snake_position[0], apple_position):
+        if detect_bite(snake.position[0], apple_position):
             apple_position = generate_apple_position()
-            increase_snake_length(snake_position)
+            snake.increase_length()
 
-        move_snake_body_except_head(snake_position)
+        snake.move()
 
-        move_snake_head(snake_position, snake_direction)
-
-        render(screen, snake_position, apple_position)
+        render(screen, snake, apple_position)
 
 
 if __name__ == "__main__":
