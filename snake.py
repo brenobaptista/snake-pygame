@@ -88,7 +88,7 @@ class Apple():
     def generate_random_position(self):
         return (random.randint(0, RESOLUTION[0]//SQUARE_SIDE - 1) * SQUARE_SIDE, random.randint(0, RESOLUTION[1]//SQUARE_SIDE - 1) * SQUARE_SIDE)
 
-    def create_new_apple(self):
+    def spawn_new_apple(self):
         self.position = self.generate_random_position()
 
 
@@ -139,7 +139,7 @@ def main():
                     snake.direction = LEFT
 
         if detect_bite(snake.position[0], apple.position):
-            apple.create_new_apple()
+            apple.spawn_new_apple()
             snake.increase_length()
 
         snake.move()
