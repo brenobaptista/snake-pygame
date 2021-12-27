@@ -12,7 +12,7 @@ START_SNAKE_DIRECTION = RIGHT
 START_SNAKE_HEAD_POSITION = (300, 300)
 START_SNAKE_LENGTH = 3
 BACKGROUND_COLOR = (0, 0, 0)
-LINE_COLOR = (40, 40, 40)
+GRID_COLOR = (40, 40, 40)
 SNAKE_COLOR = (0, 255, 0)
 APPLE_COLOR = (255, 0, 0)
 
@@ -73,13 +73,19 @@ class Gameplay():
 
         apple.position = new_apple_position
 
+    def render_grid(self):
+        for x in range(0, RESOLUTION[0], SQUARE_SIDE):
+            pg.draw.line(self.screen, GRID_COLOR,
+                         (x, 0), (x, RESOLUTION[0]))
+
+        for y in range(0, RESOLUTION[1], SQUARE_SIDE):
+            pg.draw.line(self.screen, GRID_COLOR,
+                         (0, y), (RESOLUTION[1], y))
+
     def render(self, snake, apple):
         self.screen.fill(BACKGROUND_COLOR)
 
-        for x in range(0, RESOLUTION[0], SQUARE_SIDE):
-            pg.draw.line(self.screen, LINE_COLOR, (x, 0), (x, RESOLUTION[0]))
-        for y in range(0, RESOLUTION[1], SQUARE_SIDE):
-            pg.draw.line(self.screen, LINE_COLOR, (0, y), (RESOLUTION[1], y))
+        self.render_grid()
 
         for position in snake.position:
             self.screen.blit(snake.skin, position)
