@@ -117,13 +117,13 @@ def main():
                 pg.quit()
 
             if event.type == KEYDOWN:
-                if event.key == K_UP:
+                if event.key == K_UP and snake_direction != DOWN:
                     snake_direction = UP
-                elif event.key == K_RIGHT:
+                elif event.key == K_RIGHT and snake_direction != LEFT:
                     snake_direction = RIGHT
-                elif event.key == K_DOWN:
+                elif event.key == K_DOWN and snake_direction != UP:
                     snake_direction = DOWN
-                elif event.key == K_LEFT:
+                elif event.key == K_LEFT and snake_direction != RIGHT:
                     snake_direction = LEFT
 
         if detect_bite(snake_position[0], apple_position):
