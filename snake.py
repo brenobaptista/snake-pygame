@@ -76,11 +76,11 @@ class Gameplay():
     def render_grid(self):
         for x in range(0, RESOLUTION[0], SQUARE_SIDE):
             pg.draw.line(self.screen, GRID_COLOR,
-                         (x, 0), (x, RESOLUTION[0]))
+                         (x, 0), (x, RESOLUTION[1]))
 
         for y in range(0, RESOLUTION[1], SQUARE_SIDE):
             pg.draw.line(self.screen, GRID_COLOR,
-                         (0, y), (RESOLUTION[1], y))
+                         (0, y), (RESOLUTION[0], y))
 
     def render(self, snake, apple):
         self.screen.fill(BACKGROUND_COLOR)
