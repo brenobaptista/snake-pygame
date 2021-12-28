@@ -100,6 +100,7 @@ class Snake():
         self.skin = pg.Surface((SQUARE_SIDE, SQUARE_SIDE))
         self.skin.fill(SNAKE_COLOR)
         self.direction = START_SNAKE_DIRECTION
+        self.change_direction_to = START_SNAKE_DIRECTION
         self.position = self.generate_start_position()
 
     def generate_start_position(self):
@@ -126,13 +127,13 @@ class Snake():
 
     def change_direction(self, event_key):
         if event_key == K_UP and self.direction != DOWN:
-            self.direction = UP
+            self.change_direction_to = UP
         elif event_key == K_RIGHT and self.direction != LEFT:
-            self.direction = RIGHT
+            self.change_direction_to = RIGHT
         elif event_key == K_DOWN and self.direction != UP:
-            self.direction = DOWN
+            self.change_direction_to = DOWN
         elif event_key == K_LEFT and self.direction != RIGHT:
-            self.direction = LEFT
+            self.change_direction_to = LEFT
 
     def move_body_except_head(self):
         for i in range(len(self.position) - 1, 0, -1):
@@ -140,16 +141,20 @@ class Snake():
                                 self.position[i-1][1])
 
     def move_head(self):
-        if self.direction == UP:
+        if self.change_direction_to == UP:
+            self.direction = UP
             self.position[0] = (self.position[0][0],
                                 self.position[0][1] - SQUARE_SIDE)
-        elif self.direction == RIGHT:
+        elif self.change_direction_to == RIGHT:
+            self.direction = RIGHT
             self.position[0] = (self.position[0][0] +
                                 SQUARE_SIDE, self.position[0][1])
-        elif self.direction == DOWN:
+        elif self.change_direction_to == DOWN:
+            self.direction = DOWN
             self.position[0] = (self.position[0][0],
                                 self.position[0][1] + SQUARE_SIDE)
-        elif self.direction == LEFT:
+        elif self.change_direction_to == LEFT:
+            self.direction = LEFT
             self.position[0] = (self.position[0][0] -
                                 SQUARE_SIDE, self.position[0][1])
 
