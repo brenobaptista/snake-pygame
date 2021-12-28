@@ -31,16 +31,23 @@ class Gameplay():
     def __init__(self):
         self.screen = pg.display.set_mode(RESOLUTION)
         self.clock = pg.time.Clock()
+        self.is_game_over = False
 
     def run(self, snake, apple):
         pg.init()
         pg.display.set_caption(TITLE)
 
-        while True:
+        while not self.is_game_over:
             self.limit_frames_per_second()
             self.handle_input(snake)
             self.handle_swallow(snake, apple)
+
             snake.move()
+            self.detect_snake_collision(snake.position)
+            self.detect_border_collision(snake.position[0])
+            if self.is_game_over:
+                break
+
             self.render(snake, apple)
 
     def limit_frames_per_second(self):
@@ -72,6 +79,15 @@ class Gameplay():
                 break
 
         apple.position = new_apple_position
+
+    def detect_border_collision(self, snake_head_position):
+        if snake_head_position[0] == RESOLUTION[0] or snake_head_position[1] == RESOLUTION[1] or snake_head_position[0] < 0 or snake_head_position[1] < 0:
+            self.is_game_over = True
+
+    def detect_snake_collision(self, snake_position):
+        for i in range(1, len(snake_position) - 1):
+            if snake_position[0][0] == snake_position[i][0] and snake_position[0][1] == snake_position[i][1]:
+                self.is_game_over = True
 
     def render_grid(self):
         for x in range(0, RESOLUTION[0], SQUARE_SIDE):
