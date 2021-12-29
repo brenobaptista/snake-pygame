@@ -55,9 +55,8 @@ class Gameplay():
             self.handle_input(snake)
 
             snake.move()
-            self.detect_snake_collision(snake.position)
-            self.detect_border_collision(snake.position[0])
-            if self.is_game_over:
+
+            if snake.detect_bite_itself() or snake.detect_border_collision():
                 break
 
             self.handle_bite(snake, apple)
@@ -101,14 +100,6 @@ class Gameplay():
                 break
 
         apple.position = new_apple_position
-
-    def detect_border_collision(self, snake_head_position):
-        if snake_head_position[0] >= RESOLUTION[0] or snake_head_position[1] >= RESOLUTION[1] or snake_head_position[0] < 0 or snake_head_position[1] < 0:
-            self.is_game_over = True
-
-    def detect_snake_collision(self, snake_position):
-        if snake_position[0] in snake_position[1:]:
-            self.is_game_over = True
 
     def render_grid(self):
         for x in range(0, RESOLUTION[0], SQUARE_SIDE):
@@ -228,6 +219,13 @@ class Snake():
         snake_tail_position = self.position[len(self.position) - 1]
         self.position.append((snake_tail_position[0], snake_tail_position[1]))
 
+    def detect_border_collision(self):
+        if self.position[0][0] >= RESOLUTION[0] or self.position[0][1] >= RESOLUTION[1] or self.position[0][0] < 0 or self.position[0][1] < 0:
+            return True
+
+    def detect_bite_itself(self):
+        if self.position[0] in self.position[1:]:
+            return True
 
 
 class Apple():
