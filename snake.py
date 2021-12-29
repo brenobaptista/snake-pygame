@@ -41,13 +41,14 @@ class Gameplay():
         while not self.is_game_over:
             self.limit_frames_per_second()
             self.handle_input(snake)
-            self.handle_swallow(snake, apple)
 
             snake.move()
             self.detect_snake_collision(snake.position)
             self.detect_border_collision(snake.position[0])
             if self.is_game_over:
                 break
+
+            self.handle_swallow(snake, apple)
 
             self.render(snake, apple)
 
@@ -174,7 +175,8 @@ class Snake():
                 0, (self.position[0][0] - SQUARE_SIDE, self.position[0][1]))
 
     def increase_length(self):
-        self.position.append((0, 0))
+        snake_tail = self.position[len(self.position) - 1]
+        self.position.append((snake_tail[0], snake_tail[1]))
 
 
 class Apple():
