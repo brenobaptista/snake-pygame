@@ -20,6 +20,7 @@ APPLE_COLOR = (255, 85, 85)
 SCORE_COLOR = (248, 248, 242)
 SCORE_SIZE = 18
 SCORE_PADDING = (4, 2)
+SCORE_INCREMENT = 10
 END_GAME_COLOR = (248, 248, 242)
 END_GAME_SIZE = 36
 FONT_ANTIALIAS = True
@@ -77,7 +78,7 @@ class Gameplay():
     def handle_bite(self, snake, apple):
         if self.detect_bite(snake.position[0], apple.position):
             self.spawn_new_apple(snake.position, apple)
-            self.score += 10
+            self.score += SCORE_INCREMENT
             snake.increase_length()
 
     def detect_bite(self, snake_head_position, apple_position):
