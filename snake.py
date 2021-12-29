@@ -51,7 +51,7 @@ class Gameplay():
             if self.is_game_over:
                 break
 
-            self.handle_swallow(snake, apple)
+            self.handle_bite(snake, apple)
 
             self.render(snake, apple)
 
@@ -69,12 +69,12 @@ class Gameplay():
             if event.type == KEYDOWN:
                 snake.change_direction(event.key)
 
-    def handle_swallow(self, snake, apple):
-        if self.detect_swallow(snake.position[0], apple.position):
+    def handle_bite(self, snake, apple):
+        if self.detect_bite(snake.position[0], apple.position):
             self.spawn_new_apple(snake.position, apple)
             snake.increase_length()
 
-    def detect_swallow(self, snake_head_position, apple_position):
+    def detect_bite(self, snake_head_position, apple_position):
         return (snake_head_position[0] == apple_position[0]) and (snake_head_position[1] == apple_position[1])
 
     def spawn_new_apple(self, snake_position, apple):
