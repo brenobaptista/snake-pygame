@@ -88,9 +88,8 @@ class Gameplay():
             self.is_game_over = True
 
     def detect_snake_collision(self, snake_position):
-        for i in range(1, len(snake_position) - 1):
-            if snake_position[0][0] == snake_position[i][0] and snake_position[0][1] == snake_position[i][1]:
-                self.is_game_over = True
+        if snake_position[0] in snake_position[1:]:
+            self.is_game_over = True
 
     def render_grid(self):
         for x in range(0, RESOLUTION[0], SQUARE_SIDE):
