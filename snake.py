@@ -24,6 +24,7 @@ SCORE_INCREMENT = 10
 END_GAME_COLOR = (248, 248, 242)
 END_GAME_SIZE = 36
 FONT_ANTIALIAS = True
+MUSIC_PATH = 'data/birds-music.mp3'
 
 if RESOLUTION[0] % SQUARE_SIDE != 0 or RESOLUTION[1] % SQUARE_SIDE != 0:
     raise Exception("Resolution should be a multiple of the square side")
@@ -47,6 +48,8 @@ class Gameplay():
         pg.init()
         pg.display.set_caption(TITLE)
 
+        self.play_music()
+
         while not self.is_game_over:
             self.limit_frames_per_second()
             self.handle_input(snake)
@@ -62,6 +65,10 @@ class Gameplay():
             self.render(snake, apple)
 
         self.end_game()
+
+    def play_music(self):
+        pg.mixer.music.load(MUSIC_PATH)
+        pg.mixer.music.play(-1)
 
     def limit_frames_per_second(self):
         self.clock.tick(FRAMES_PER_SECOND)
