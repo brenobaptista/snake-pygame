@@ -16,6 +16,9 @@ BACKGROUND_COLOR = (0, 0, 0)
 GRID_COLOR = (40, 40, 40)
 SNAKE_COLOR = (0, 255, 0)
 APPLE_COLOR = (255, 0, 0)
+SCORE_COLOR = (255, 255, 255)
+SCORE_SIZE = 20
+SCORE_PADDING = (4, 2)
 END_GAME_COLOR = (255, 0, 0)
 END_GAME_SIZE = 50
 FONT_ANTIALIAS = True
@@ -36,6 +39,7 @@ class Gameplay():
         self.screen = pg.display.set_mode(RESOLUTION)
         self.clock = pg.time.Clock()
         self.is_game_over = False
+        self.score = 0
 
     def run(self, snake, apple):
         pg.init()
@@ -72,6 +76,7 @@ class Gameplay():
     def handle_bite(self, snake, apple):
         if self.detect_bite(snake.position[0], apple.position):
             self.spawn_new_apple(snake.position, apple)
+            self.score += 10
             snake.increase_length()
 
     def detect_bite(self, snake_head_position, apple_position):
@@ -105,10 +110,24 @@ class Gameplay():
             pg.draw.line(self.screen, GRID_COLOR,
                          (0, y), (RESOLUTION[0], y))
 
+    def render_score(self):
+        score_font = pg.font.Font(pg.font.get_default_font(), SCORE_SIZE)
+
+        score_surface = score_font.render(
+            'Score: %s' % (self.score), FONT_ANTIALIAS, SCORE_COLOR)
+
+        score_rect = score_surface.get_rect()
+
+        score_rect.topleft = SCORE_PADDING
+
+        self.screen.blit(score_surface, score_rect)
+
     def render(self, snake, apple):
         self.screen.fill(BACKGROUND_COLOR)
 
         self.render_grid()
+
+        self.render_score()
 
         for position in snake.position:
             self.screen.blit(snake.skin, position)
