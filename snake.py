@@ -84,7 +84,7 @@ class Gameplay():
         apple.position = new_apple_position
 
     def detect_border_collision(self, snake_head_position):
-        if snake_head_position[0] == RESOLUTION[0] or snake_head_position[1] == RESOLUTION[1] or snake_head_position[0] < 0 or snake_head_position[1] < 0:
+        if snake_head_position[0] >= RESOLUTION[0] or snake_head_position[1] >= RESOLUTION[1] or snake_head_position[0] < 0 or snake_head_position[1] < 0:
             self.is_game_over = True
 
     def detect_snake_collision(self, snake_position):
