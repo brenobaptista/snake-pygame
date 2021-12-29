@@ -153,32 +153,25 @@ class Snake():
         elif event_key == K_LEFT and self.direction != RIGHT:
             self.change_direction_to = LEFT
 
-    def move_body_except_head(self):
-        for i in range(len(self.position) - 1, 0, -1):
-            self.position[i] = (self.position[i-1][0],
-                                self.position[i-1][1])
+    def move(self):
+        self.position.pop()
 
-    def move_head(self):
         if self.change_direction_to == UP:
             self.direction = UP
-            self.position[0] = (self.position[0][0],
-                                self.position[0][1] - SQUARE_SIDE)
+            self.position.insert(
+                0, (self.position[0][0], self.position[0][1] - SQUARE_SIDE))
         elif self.change_direction_to == RIGHT:
             self.direction = RIGHT
-            self.position[0] = (self.position[0][0] +
-                                SQUARE_SIDE, self.position[0][1])
+            self.position.insert(
+                0, (self.position[0][0] + SQUARE_SIDE, self.position[0][1]))
         elif self.change_direction_to == DOWN:
             self.direction = DOWN
-            self.position[0] = (self.position[0][0],
-                                self.position[0][1] + SQUARE_SIDE)
+            self.position.insert(
+                0, (self.position[0][0], self.position[0][1] + SQUARE_SIDE))
         elif self.change_direction_to == LEFT:
             self.direction = LEFT
-            self.position[0] = (self.position[0][0] -
-                                SQUARE_SIDE, self.position[0][1])
-
-    def move(self):
-        self.move_body_except_head()
-        self.move_head()
+            self.position.insert(
+                0, (self.position[0][0] - SQUARE_SIDE, self.position[0][1]))
 
     def increase_length(self):
         self.position.append((0, 0))
