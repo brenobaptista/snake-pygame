@@ -16,6 +16,9 @@ BACKGROUND_COLOR = (0, 0, 0)
 GRID_COLOR = (40, 40, 40)
 SNAKE_COLOR = (0, 255, 0)
 APPLE_COLOR = (255, 0, 0)
+END_GAME_COLOR = (255, 0, 0)
+END_GAME_SIZE = 50
+FONT_ANTIALIAS = True
 
 if RESOLUTION[0] % SQUARE_SIDE != 0 or RESOLUTION[1] % SQUARE_SIDE != 0:
     raise Exception("Resolution should be a multiple of the square side")
@@ -51,6 +54,8 @@ class Gameplay():
             self.handle_swallow(snake, apple)
 
             self.render(snake, apple)
+
+        self.end_game()
 
     def limit_frames_per_second(self):
         self.clock.tick(FRAMES_PER_SECOND)
@@ -111,6 +116,24 @@ class Gameplay():
         self.screen.blit(apple.peel, apple.position)
 
         pg.display.update()
+
+    def end_game(self):
+        end_game_font = pg.font.Font(pg.font.get_default_font(), END_GAME_SIZE)
+
+        end_game_surface = end_game_font.render(
+            'Game Over', FONT_ANTIALIAS, END_GAME_COLOR)
+
+        end_game_rect = end_game_surface.get_rect()
+
+        end_game_rect.midtop = (RESOLUTION[0]/2, RESOLUTION[1]/4)
+
+        self.screen.blit(end_game_surface, end_game_rect)
+        pg.display.flip()
+
+        time.sleep(2)
+
+        pg.quit()
+        sys.exit()
 
 
 class Snake():
