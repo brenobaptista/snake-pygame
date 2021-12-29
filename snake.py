@@ -2,6 +2,7 @@
 import pygame as pg
 from pygame.locals import *
 import random
+import sys
 
 TITLE = 'Snake'
 FRAMES_PER_SECOND = 15
@@ -57,6 +58,7 @@ class Gameplay():
         for event in pg.event.get():
             if event.type == QUIT:
                 pg.quit()
+                sys.exit()
 
             if event.type == KEYDOWN:
                 snake.change_direction(event.key)
