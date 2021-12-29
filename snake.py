@@ -217,8 +217,9 @@ class Snake():
                 0, (self.position[0][0] - SQUARE_SIDE, self.position[0][1]))
 
     def increase_length(self):
-        snake_tail = self.position[len(self.position) - 1]
-        self.position.append((snake_tail[0], snake_tail[1]))
+        snake_tail_position = self.position[len(self.position) - 1]
+        self.position.append((snake_tail_position[0], snake_tail_position[1]))
+
 
 
 class Apple():
