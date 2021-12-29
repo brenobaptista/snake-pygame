@@ -41,7 +41,6 @@ class Gameplay():
     def __init__(self):
         self.screen = pg.display.set_mode(RESOLUTION)
         self.clock = pg.time.Clock()
-        self.is_game_over = False
         self.score = 0
 
     def run(self, snake, apple):
@@ -50,7 +49,7 @@ class Gameplay():
 
         self.play_music()
 
-        while not self.is_game_over:
+        while True:
             self.limit_frames_per_second()
             self.handle_input(snake)
 
