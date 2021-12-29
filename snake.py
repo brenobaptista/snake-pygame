@@ -25,6 +25,8 @@ END_GAME_COLOR = (248, 248, 242)
 END_GAME_SIZE = 36
 FONT_ANTIALIAS = True
 MUSIC_PATH = 'data/birds-music.mp3'
+BITE_SOUND_PATH = 'data/bite-sound.mp3'
+CRASH_SOUND_PATH = 'data/crash-sound.mp3'
 
 if RESOLUTION[0] % SQUARE_SIDE != 0 or RESOLUTION[1] % SQUARE_SIDE != 0:
     raise Exception("Resolution should be a multiple of the square side")
@@ -84,6 +86,7 @@ class Gameplay():
         if self.detect_bite(snake.position[0], apple.position):
             self.spawn_new_apple(snake.position, apple)
             self.score += SCORE_INCREMENT
+            snake.play_bite_sound()
             snake.increase_length()
 
     def detect_bite(self, snake_head_position, apple_position):
@@ -218,12 +221,22 @@ class Snake():
         snake_tail_position = self.position[len(self.position) - 1]
         self.position.append((snake_tail_position[0], snake_tail_position[1]))
 
+    def play_bite_sound(self):
+        bite = pg.mixer.Sound(BITE_SOUND_PATH)
+        bite.play()
+
+    def play_crash_sound(self):
+        crash = pg.mixer.Sound(CRASH_SOUND_PATH)
+        crash.play()
+
     def detect_border_collision(self):
         if self.position[0][0] >= RESOLUTION[0] or self.position[0][1] >= RESOLUTION[1] or self.position[0][0] < 0 or self.position[0][1] < 0:
+            self.play_crash_sound()
             return True
 
     def detect_bite_itself(self):
         if self.position[0] in self.position[1:]:
+            self.play_bite_sound()
             return True
 
 
