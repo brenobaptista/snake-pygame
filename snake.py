@@ -57,40 +57,40 @@ class Gameplay():
         pg.init()
         pg.display.set_caption(TITLE)
         pg.mouse.set_visible(0)
-        self.set_icon()
+        self.__set_icon()
 
-        self.play_music()
+        self.__play_music()
 
         while True:
-            self.limit_frames_per_second()
-            self.handle_input(snake)
+            self.__limit_frames_per_second()
+            self.__handle_input(snake)
 
             snake.move()
 
             if snake.detect_bite_itself() or snake.detect_border_collision():
                 break
 
-            self.handle_bite(snake, apple)
+            self.__handle_bite(snake, apple)
 
-            self.render(snake, apple)
+            self.__render(snake, apple)
 
-        self.end_game()
+        self.__end_game()
 
-    def set_icon(self):
+    def __set_icon(self):
         icon_path = os.path.join(main_dir, 'data', 'icon.png')
         icon = pg.image.load(icon_path)
         icon_resized = pg.transform.scale(icon, (32, 32))
         pg.display.set_icon(icon_resized)
 
-    def play_music(self):
+    def __play_music(self):
         music_path = os.path.join(main_dir, 'data', 'birds-music.mp3')
         pg.mixer.music.load(music_path)
         pg.mixer.music.play(-1)
 
-    def limit_frames_per_second(self):
+    def __limit_frames_per_second(self):
         self.clock.tick(FRAMES_PER_SECOND)
 
-    def handle_input(self, snake):
+    def __handle_input(self, snake):
         for event in pg.event.get():
             if event.type == QUIT:
                 pg.quit()
@@ -99,17 +99,17 @@ class Gameplay():
             if event.type == KEYDOWN:
                 snake.change_direction(event.key)
 
-    def handle_bite(self, snake, apple):
-        if self.detect_bite(snake.position[0], apple.position):
-            self.spawn_new_apple(snake.position, apple)
+    def __handle_bite(self, snake, apple):
+        if self.__detect_bite(snake.position[0], apple.position):
+            self.__spawn_new_apple(snake.position, apple)
             self.score += SCORE_INCREMENT
             snake.increase_length()
             play_sound('bite-sound.mp3')
 
-    def detect_bite(self, snake_head_position, apple_position):
+    def __detect_bite(self, snake_head_position, apple_position):
         return snake_head_position[0] == apple_position[0] and snake_head_position[1] == apple_position[1]
 
-    def spawn_new_apple(self, snake_position, apple):
+    def __spawn_new_apple(self, snake_position, apple):
         while True:
             new_apple_position = generate_random_position()
             apple_detection_area = pg.Rect(
@@ -120,13 +120,13 @@ class Gameplay():
 
         apple.position = new_apple_position
 
-    def render_grid(self):
+    def __render_grid(self):
         for x in range(0, RESOLUTION[0], SQUARE_SIDE):
             pg.draw.line(self.screen, GRID_COLOR, (x, 0), (x, RESOLUTION[1]))
         for y in range(0, RESOLUTION[1], SQUARE_SIDE):
             pg.draw.line(self.screen, GRID_COLOR, (0, y), (RESOLUTION[0], y))
 
-    def render_score(self):
+    def __render_score(self):
         score_font = pg.font.SysFont('monospace', SCORE_SIZE)
 
         score_surface = score_font.render(
@@ -138,12 +138,12 @@ class Gameplay():
 
         self.screen.blit(score_surface, score_rect)
 
-    def render(self, snake, apple):
+    def __render(self, snake, apple):
         self.screen.fill(BACKGROUND_COLOR)
 
-        self.render_grid()
+        self.__render_grid()
 
-        self.render_score()
+        self.__render_score()
 
         for position in snake.position:
             self.screen.blit(snake.skin, position)
@@ -152,7 +152,7 @@ class Gameplay():
 
         pg.display.update()
 
-    def render_game_over(self):
+    def __render_game_over(self):
         game_over_font = pg.font.SysFont('monospace', GAME_OVER_SIZE)
         game_over_surface = game_over_font.render(
             'Game Over', FONT_ANTIALIAS, GAME_OVER_COLOR)
@@ -163,8 +163,8 @@ class Gameplay():
         self.screen.blit(game_over_surface, game_over_rect)
         pg.display.flip()
 
-    def end_game(self):
-        self.render_game_over()
+    def __end_game(self):
+        self.__render_game_over()
         time.sleep(2)
 
         pg.quit()
@@ -177,9 +177,9 @@ class Snake():
         self.skin.fill(SNAKE_COLOR)
         self.direction = START_SNAKE_DIRECTION
         self.change_direction_to = START_SNAKE_DIRECTION
-        self.position = self.generate_start_position()
+        self.position = self.__generate_start_position()
 
-    def generate_start_position(self):
+    def __generate_start_position(self):
         start_position = [(0, 0)] * START_SNAKE_LENGTH
 
         if START_SNAKE_DIRECTION == UP:
