@@ -38,6 +38,12 @@ def generate_random_position():
     return (random.randint(0, RESOLUTION[0]//SQUARE_SIDE - 1) * SQUARE_SIDE, random.randint(0, RESOLUTION[1]//SQUARE_SIDE - 1) * SQUARE_SIDE)
 
 
+def play_sound(file):
+    sound_path = os.path.join(MAIN_DIR, "data", file)
+    sound = pg.mixer.Sound(sound_path)
+    sound.play()
+
+
 class Gameplay():
     def __init__(self):
         self.screen = pg.display.set_mode(RESOLUTION)
@@ -86,8 +92,8 @@ class Gameplay():
         if self.detect_bite(snake.position[0], apple.position):
             self.spawn_new_apple(snake.position, apple)
             self.score += SCORE_INCREMENT
-            snake.play_bite_sound()
             snake.increase_length()
+            play_sound("bite-sound.mp3")
 
     def detect_bite(self, snake_head_position, apple_position):
         return (snake_head_position[0] == apple_position[0]) and (snake_head_position[1] == apple_position[1])
@@ -221,24 +227,14 @@ class Snake():
         snake_tail_position = self.position[len(self.position) - 1]
         self.position.append((snake_tail_position[0], snake_tail_position[1]))
 
-    def play_bite_sound(self):
-        bite_sound_path = os.path.join(MAIN_DIR, "data", "bite-sound.mp3")
-        bite = pg.mixer.Sound(bite_sound_path)
-        bite.play()
-
-    def play_crash_sound(self):
-        crash_sound_path = os.path.join(MAIN_DIR, "data", "crash-sound.mp3")
-        crash = pg.mixer.Sound(crash_sound_path)
-        crash.play()
-
     def detect_border_collision(self):
         if self.position[0][0] >= RESOLUTION[0] or self.position[0][1] >= RESOLUTION[1] or self.position[0][0] < 0 or self.position[0][1] < 0:
-            self.play_crash_sound()
+            play_sound("crash-sound.mp3")
             return True
 
     def detect_bite_itself(self):
         if self.position[0] in self.position[1:]:
-            self.play_bite_sound()
+            play_sound("bite-sound.mp3")
             return True
 
 
