@@ -25,7 +25,6 @@ SCORE_INCREMENT = 10
 END_GAME_COLOR = (248, 248, 242)
 END_GAME_SIZE = 36
 FONT_ANTIALIAS = True
-MAIN_DIR = os.path.split(os.path.abspath(__file__))[0]
 
 if RESOLUTION[0] % SQUARE_SIDE != 0 or RESOLUTION[1] % SQUARE_SIDE != 0:
     raise Exception('Resolution should be a multiple of the square side')
@@ -34,14 +33,17 @@ if START_SNAKE_HEAD_POSITION[0] % SQUARE_SIDE != 0 or START_SNAKE_HEAD_POSITION[
     raise Exception('Snake position should be a multiple of the square side')
 
 
-def generate_random_position():
-    return (random.randint(0, RESOLUTION[0]//SQUARE_SIDE - 1) * SQUARE_SIDE, random.randint(0, RESOLUTION[1]//SQUARE_SIDE - 1) * SQUARE_SIDE)
+main_dir = os.path.split(os.path.abspath(__file__))[0]
 
 
 def play_sound(file):
-    sound_path = os.path.join(MAIN_DIR, 'data', file)
+    sound_path = os.path.join(main_dir, 'data', file)
     sound = pg.mixer.Sound(sound_path)
     sound.play()
+
+
+def generate_random_position():
+    return (random.randint(0, RESOLUTION[0]//SQUARE_SIDE - 1) * SQUARE_SIDE, random.randint(0, RESOLUTION[1]//SQUARE_SIDE - 1) * SQUARE_SIDE)
 
 
 class Gameplay():
@@ -72,7 +74,7 @@ class Gameplay():
         self.end_game()
 
     def play_music(self):
-        music_path = os.path.join(MAIN_DIR, 'data', 'birds-music.mp3')
+        music_path = os.path.join(main_dir, 'data', 'birds-music.mp3')
         pg.mixer.music.load(music_path)
         pg.mixer.music.play(-1)
 
