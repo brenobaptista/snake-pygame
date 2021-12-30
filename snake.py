@@ -143,12 +143,12 @@ class Gameplay():
 
         self.__render_grid()
 
-        self.__render_score()
-
         for position in snake.position:
             self.screen.blit(snake.skin, position)
 
         self.screen.blit(apple.peel, apple.position)
+
+        self.__render_score()
 
         pg.display.update()
 
