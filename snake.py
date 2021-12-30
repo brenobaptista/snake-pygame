@@ -55,6 +55,7 @@ class Gameplay():
     def run(self, snake, apple):
         pg.init()
         pg.display.set_caption(TITLE)
+        pg.mouse.set_visible(0)
 
         self.play_music()
 
