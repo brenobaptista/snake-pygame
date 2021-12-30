@@ -2,6 +2,8 @@
 
 > Snake game made using Pygame 2
 
+![Gameplay GIF](https://github.com/brenobaptista/snake-pygame/blob/main/data/gameplay.gif)
+
 ## Getting Started
 
 ```
