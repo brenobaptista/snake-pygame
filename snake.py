@@ -187,7 +187,7 @@ class Snake():
                 start_position[i] = (START_SNAKE_HEAD_POSITION[0],
                                      START_SNAKE_HEAD_POSITION[1] + SQUARE_SIDE * i)
         elif START_SNAKE_DIRECTION == RIGHT:
-            for i in range(0, START_SNAKE_LENGTH - 1, 1):
+            for i in range(0, START_SNAKE_LENGTH, 1):
                 start_position[i] = (START_SNAKE_HEAD_POSITION[0] - SQUARE_SIDE * i,
                                      START_SNAKE_HEAD_POSITION[1])
         elif START_SNAKE_DIRECTION == DOWN:
