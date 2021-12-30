@@ -51,7 +51,7 @@ class Gameplay():
     def __init__(self):
         self.screen = pg.display.set_mode(RESOLUTION)
         self.clock = pg.time.Clock()
-        self.score = 0
+        self.__score = 0
 
     def run(self, snake, apple):
         pg.init()
@@ -102,7 +102,7 @@ class Gameplay():
     def __handle_bite(self, snake, apple):
         if self.__detect_bite(snake.position[0], apple.position):
             self.__spawn_new_apple(snake.position, apple)
-            self.score += SCORE_INCREMENT
+            self.__score += SCORE_INCREMENT
             snake.increase_length()
             play_sound('bite-sound.mp3')
 
@@ -130,7 +130,7 @@ class Gameplay():
         score_font = pg.font.SysFont('monospace', SCORE_SIZE)
 
         score_surface = score_font.render(
-            'Score: %s' % (self.score), FONT_ANTIALIAS, SCORE_COLOR)
+            'Score: %s' % (self.__score), FONT_ANTIALIAS, SCORE_COLOR)
 
         score_rect = score_surface.get_rect()
 
@@ -175,7 +175,7 @@ class Snake():
     def __init__(self):
         self.skin = pg.Surface((SQUARE_SIDE, SQUARE_SIDE))
         self.skin.fill(SNAKE_COLOR)
-        self.direction = START_SNAKE_DIRECTION
+        self.__direction = START_SNAKE_DIRECTION
         self.change_direction_to = START_SNAKE_DIRECTION
         self.position = self.__generate_start_position()
 
@@ -202,32 +202,32 @@ class Snake():
         return start_position
 
     def change_direction(self, event_key):
-        if event_key == K_UP and self.direction != DOWN:
+        if event_key == K_UP and self.__direction != DOWN:
             self.change_direction_to = UP
-        elif event_key == K_RIGHT and self.direction != LEFT:
+        elif event_key == K_RIGHT and self.__direction != LEFT:
             self.change_direction_to = RIGHT
-        elif event_key == K_DOWN and self.direction != UP:
+        elif event_key == K_DOWN and self.__direction != UP:
             self.change_direction_to = DOWN
-        elif event_key == K_LEFT and self.direction != RIGHT:
+        elif event_key == K_LEFT and self.__direction != RIGHT:
             self.change_direction_to = LEFT
 
     def move(self):
         self.position.pop()
 
         if self.change_direction_to == UP:
-            self.direction = UP
+            self.__direction = UP
             self.position.insert(
                 0, (self.position[0][0], self.position[0][1] - SQUARE_SIDE))
         elif self.change_direction_to == RIGHT:
-            self.direction = RIGHT
+            self.__direction = RIGHT
             self.position.insert(
                 0, (self.position[0][0] + SQUARE_SIDE, self.position[0][1]))
         elif self.change_direction_to == DOWN:
-            self.direction = DOWN
+            self.__direction = DOWN
             self.position.insert(
                 0, (self.position[0][0], self.position[0][1] + SQUARE_SIDE))
         elif self.change_direction_to == LEFT:
-            self.direction = LEFT
+            self.__direction = LEFT
             self.position.insert(
                 0, (self.position[0][0] - SQUARE_SIDE, self.position[0][1]))
 
