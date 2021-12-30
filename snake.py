@@ -22,8 +22,8 @@ SCORE_COLOR = (248, 248, 242)
 SCORE_SIZE = 18
 SCORE_PADDING = (4, 1)
 SCORE_INCREMENT = 10
-END_GAME_COLOR = (248, 248, 242)
-END_GAME_SIZE = 36
+GAME_OVER_COLOR = (248, 248, 242)
+GAME_OVER_SIZE = 36
 FONT_ANTIALIAS = True
 
 if RESOLUTION[0] % SQUARE_SIDE != 0 or RESOLUTION[1] % SQUARE_SIDE != 0:
@@ -152,19 +152,19 @@ class Gameplay():
 
         pg.display.update()
 
-    def end_game(self):
-        end_game_font = pg.font.SysFont('monospace', END_GAME_SIZE)
+    def render_game_over(self):
+        game_over_font = pg.font.SysFont('monospace', GAME_OVER_SIZE)
+        game_over_surface = game_over_font.render(
+            'Game Over', FONT_ANTIALIAS, GAME_OVER_COLOR)
 
-        end_game_surface = end_game_font.render(
-            'Game Over', FONT_ANTIALIAS, END_GAME_COLOR)
+        game_over_rect = game_over_surface.get_rect()
+        game_over_rect.midtop = (RESOLUTION[0]/2, RESOLUTION[1]/4)
 
-        end_game_rect = end_game_surface.get_rect()
-
-        end_game_rect.midtop = (RESOLUTION[0]/2, RESOLUTION[1]/4)
-
-        self.screen.blit(end_game_surface, end_game_rect)
+        self.screen.blit(game_over_surface, game_over_rect)
         pg.display.flip()
 
+    def end_game(self):
+        self.render_game_over()
         time.sleep(2)
 
         pg.quit()
