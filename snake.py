@@ -43,7 +43,8 @@ def play_sound(file):
 
 
 def generate_random_position():
-    return (random.randint(0, RESOLUTION[0]//SQUARE_SIDE - 1) * SQUARE_SIDE, random.randint(0, RESOLUTION[1]//SQUARE_SIDE - 1) * SQUARE_SIDE)
+    return (random.randint(0, RESOLUTION[0]//SQUARE_SIDE - 1) * SQUARE_SIDE,
+            random.randint(0, RESOLUTION[1]//SQUARE_SIDE - 1) * SQUARE_SIDE)
 
 
 class Gameplay():
@@ -106,7 +107,7 @@ class Gameplay():
             play_sound('bite-sound.mp3')
 
     def detect_bite(self, snake_head_position, apple_position):
-        return (snake_head_position[0] == apple_position[0]) and (snake_head_position[1] == apple_position[1])
+        return snake_head_position[0] == apple_position[0] and snake_head_position[1] == apple_position[1]
 
     def spawn_new_apple(self, snake_position, apple):
         while True:
@@ -121,12 +122,9 @@ class Gameplay():
 
     def render_grid(self):
         for x in range(0, RESOLUTION[0], SQUARE_SIDE):
-            pg.draw.line(self.screen, GRID_COLOR,
-                         (x, 0), (x, RESOLUTION[1]))
-
+            pg.draw.line(self.screen, GRID_COLOR, (x, 0), (x, RESOLUTION[1]))
         for y in range(0, RESOLUTION[1], SQUARE_SIDE):
-            pg.draw.line(self.screen, GRID_COLOR,
-                         (0, y), (RESOLUTION[0], y))
+            pg.draw.line(self.screen, GRID_COLOR, (0, y), (RESOLUTION[0], y))
 
     def render_score(self):
         score_font = pg.font.SysFont('monospace', SCORE_SIZE)
