@@ -52,6 +52,7 @@ class Gameplay():
         self.screen = pg.display.set_mode(RESOLUTION)
         self.clock = pg.time.Clock()
         self.__score = 0
+        self.is_paused = True
 
     def run(self, snake, apple):
         pg.init()
@@ -65,12 +66,13 @@ class Gameplay():
             self.__limit_frames_per_second()
             self.__handle_input(snake)
 
-            snake.move()
+            if not self.is_paused:
+                snake.move()
 
-            if snake.detect_bite_itself() or snake.detect_border_collision():
-                break
+                if snake.detect_bite_itself() or snake.detect_border_collision():
+                    break
 
-            self.__handle_bite(snake, apple)
+                self.__handle_bite(snake, apple)
 
             self.__render(snake, apple)
 
@@ -99,6 +101,9 @@ class Gameplay():
             if event.type == KEYDOWN:
                 snake.change_direction(event.key)
 
+                if event.key == K_SPACE:
+                    self.is_paused = False if self.is_paused else True
+
     def __handle_bite(self, snake, apple):
         if self.__detect_bite(snake.position[0], apple.position):
             self.__spawn_new_apple(snake.position, apple)
@@ -119,6 +124,17 @@ class Gameplay():
                 break
 
         apple.position = new_apple_position
+
+    def __render_unpause_instructions(self):
+        if self.is_paused:
+            game_over_font = pg.font.SysFont('monospace', GAME_OVER_SIZE)
+            game_over_surface = game_over_font.render(
+                'Press SPACE to unpause', FONT_ANTIALIAS, GAME_OVER_COLOR)
+
+            game_over_rect = game_over_surface.get_rect()
+            game_over_rect.midtop = (RESOLUTION[0]/2, RESOLUTION[1]/4)
+
+            self.screen.blit(game_over_surface, game_over_rect)
 
     def __render_grid(self):
         for x in range(0, RESOLUTION[0], SQUARE_SIDE):
@@ -149,6 +165,8 @@ class Gameplay():
         self.screen.blit(apple.peel, apple.position)
 
         self.__render_score()
+
+        self.__render_unpause_instructions()
 
         pg.display.update()
 
