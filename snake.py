@@ -56,6 +56,7 @@ class Gameplay():
         pg.init()
         pg.display.set_caption(TITLE)
         pg.mouse.set_visible(0)
+        self.set_icon()
 
         self.play_music()
 
@@ -73,6 +74,12 @@ class Gameplay():
             self.render(snake, apple)
 
         self.end_game()
+
+    def set_icon(self):
+        icon_path = os.path.join(main_dir, 'data', 'icon.png')
+        icon = pg.image.load(icon_path)
+        icon_resized = pg.transform.scale(icon, (32, 32))
+        pg.display.set_icon(icon_resized)
 
     def play_music(self):
         music_path = os.path.join(main_dir, 'data', 'birds-music.mp3')
