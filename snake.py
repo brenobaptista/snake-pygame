@@ -129,7 +129,7 @@ class Gameplay():
                          (0, y), (RESOLUTION[0], y))
 
     def render_score(self):
-        score_font = pg.font.Font(pg.font.get_default_font(), SCORE_SIZE)
+        score_font = pg.font.SysFont('monospace', SCORE_SIZE)
 
         score_surface = score_font.render(
             'Score: %s' % (self.score), FONT_ANTIALIAS, SCORE_COLOR)
@@ -155,7 +155,7 @@ class Gameplay():
         pg.display.update()
 
     def end_game(self):
-        end_game_font = pg.font.Font(pg.font.get_default_font(), END_GAME_SIZE)
+        end_game_font = pg.font.SysFont('monospace', END_GAME_SIZE)
 
         end_game_surface = end_game_font.render(
             'Game Over', FONT_ANTIALIAS, END_GAME_COLOR)
