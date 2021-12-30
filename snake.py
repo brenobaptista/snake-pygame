@@ -28,10 +28,10 @@ FONT_ANTIALIAS = True
 MAIN_DIR = os.path.split(os.path.abspath(__file__))[0]
 
 if RESOLUTION[0] % SQUARE_SIDE != 0 or RESOLUTION[1] % SQUARE_SIDE != 0:
-    raise Exception("Resolution should be a multiple of the square side")
+    raise Exception('Resolution should be a multiple of the square side')
 
 if START_SNAKE_HEAD_POSITION[0] % SQUARE_SIDE != 0 or START_SNAKE_HEAD_POSITION[1] % SQUARE_SIDE != 0:
-    raise Exception("Snake position should be a multiple of the square side")
+    raise Exception('Snake position should be a multiple of the square side')
 
 
 def generate_random_position():
@@ -39,7 +39,7 @@ def generate_random_position():
 
 
 def play_sound(file):
-    sound_path = os.path.join(MAIN_DIR, "data", file)
+    sound_path = os.path.join(MAIN_DIR, 'data', file)
     sound = pg.mixer.Sound(sound_path)
     sound.play()
 
@@ -72,7 +72,7 @@ class Gameplay():
         self.end_game()
 
     def play_music(self):
-        music_path = os.path.join(MAIN_DIR, "data", "birds-music.mp3")
+        music_path = os.path.join(MAIN_DIR, 'data', 'birds-music.mp3')
         pg.mixer.music.load(music_path)
         pg.mixer.music.play(-1)
 
@@ -93,7 +93,7 @@ class Gameplay():
             self.spawn_new_apple(snake.position, apple)
             self.score += SCORE_INCREMENT
             snake.increase_length()
-            play_sound("bite-sound.mp3")
+            play_sound('bite-sound.mp3')
 
     def detect_bite(self, snake_head_position, apple_position):
         return (snake_head_position[0] == apple_position[0]) and (snake_head_position[1] == apple_position[1])
@@ -229,12 +229,12 @@ class Snake():
 
     def detect_border_collision(self):
         if self.position[0][0] >= RESOLUTION[0] or self.position[0][1] >= RESOLUTION[1] or self.position[0][0] < 0 or self.position[0][1] < 0:
-            play_sound("crash-sound.mp3")
+            play_sound('crash-sound.mp3')
             return True
 
     def detect_bite_itself(self):
         if self.position[0] in self.position[1:]:
-            play_sound("bite-sound.mp3")
+            play_sound('bite-sound.mp3')
             return True
 
 
@@ -253,5 +253,5 @@ def main():
     gameplay.run(snake, apple)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
