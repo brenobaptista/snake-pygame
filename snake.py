@@ -4,6 +4,7 @@ from pygame.locals import *
 import random
 import time
 import sys
+import os
 
 TITLE = 'Snake'
 FRAMES_PER_SECOND = 15
@@ -24,9 +25,7 @@ SCORE_INCREMENT = 10
 END_GAME_COLOR = (248, 248, 242)
 END_GAME_SIZE = 36
 FONT_ANTIALIAS = True
-MUSIC_PATH = 'data/birds-music.mp3'
-BITE_SOUND_PATH = 'data/bite-sound.mp3'
-CRASH_SOUND_PATH = 'data/crash-sound.mp3'
+MAIN_DIR = os.path.split(os.path.abspath(__file__))[0]
 
 if RESOLUTION[0] % SQUARE_SIDE != 0 or RESOLUTION[1] % SQUARE_SIDE != 0:
     raise Exception("Resolution should be a multiple of the square side")
@@ -67,7 +66,8 @@ class Gameplay():
         self.end_game()
 
     def play_music(self):
-        pg.mixer.music.load(MUSIC_PATH)
+        music_path = os.path.join(MAIN_DIR, "data", "birds-music.mp3")
+        pg.mixer.music.load(music_path)
         pg.mixer.music.play(-1)
 
     def limit_frames_per_second(self):
@@ -222,11 +222,13 @@ class Snake():
         self.position.append((snake_tail_position[0], snake_tail_position[1]))
 
     def play_bite_sound(self):
-        bite = pg.mixer.Sound(BITE_SOUND_PATH)
+        bite_sound_path = os.path.join(MAIN_DIR, "data", "bite-sound.mp3")
+        bite = pg.mixer.Sound(bite_sound_path)
         bite.play()
 
     def play_crash_sound(self):
-        crash = pg.mixer.Sound(CRASH_SOUND_PATH)
+        crash_sound_path = os.path.join(MAIN_DIR, "data", "crash-sound.mp3")
+        crash = pg.mixer.Sound(crash_sound_path)
         crash.play()
 
     def detect_border_collision(self):
