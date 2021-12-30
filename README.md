@@ -12,6 +12,18 @@ Run game:
 $ python snake.py
 ```
 
+## Building on Windows
+
+```
+Install PyInstaller:
+$ pip install pyinstaller
+
+Generate the bundle:
+$ pyinstaller snake.py --onefile --noconsole –-add-data "data;data" --icon=data/icon.ico
+```
+
+The executable will be inside the folder `dist`.
+
 ## Author
 
 | [![brenobaptista](https://avatars1.githubusercontent.com/u/47641641?s=120&v=4)](https://github.com/brenobaptista) |
