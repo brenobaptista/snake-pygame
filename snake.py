@@ -183,7 +183,7 @@ class Gameplay():
 
     def __end_game(self):
         self.__render_game_over()
-        time.sleep(2)
+        time.sleep(3)
 
         pg.quit()
         sys.exit()
