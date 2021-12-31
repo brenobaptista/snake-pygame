@@ -52,7 +52,7 @@ class Gameplay():
         self.screen = pg.display.set_mode(RESOLUTION)
         self.clock = pg.time.Clock()
         self.__score = 0
-        self.is_paused = True
+        self.__is_paused = True
 
     def run(self, snake, apple):
         pg.init()
@@ -66,7 +66,7 @@ class Gameplay():
             self.__limit_frames_per_second()
             self.__handle_input(snake)
 
-            if not self.is_paused:
+            if not self.__is_paused:
                 snake.move()
 
                 if snake.detect_bite_itself() or snake.detect_border_collision():
@@ -102,7 +102,7 @@ class Gameplay():
                 snake.change_direction(event.key)
 
                 if event.key == K_SPACE:
-                    self.is_paused = False if self.is_paused else True
+                    self.__is_paused = False if self.__is_paused else True
 
     def __handle_bite(self, snake, apple):
         if self.__detect_bite(snake.position[0], apple.position):
@@ -126,7 +126,7 @@ class Gameplay():
         apple.position = new_apple_position
 
     def __render_unpause_instructions(self):
-        if self.is_paused:
+        if self.__is_paused:
             game_over_font = pg.font.SysFont('monospace', GAME_OVER_SIZE)
             game_over_surface = game_over_font.render(
                 'Press SPACE to unpause', FONT_ANTIALIAS, GAME_OVER_COLOR)
