@@ -85,7 +85,7 @@ class Gameplay():
         pg.display.set_icon(icon_resized)
 
     def __play_music(self):
-        music_path = os.path.join(main_dir, 'data', 'birds-music.mp3')
+        music_path = os.path.join(main_dir, 'data', 'game-music.mp3')
         pg.mixer.music.load(music_path)
         pg.mixer.music.play(-1)
 
